@@ -1,0 +1,21 @@
+{
+  "name": "clara-core",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "keywords": [],
+  "author": "Augment Chinedu",
+  "license": "ISC",
+  "description": "Code Manager Express",
+  "dependencies": {
+    "@google-cloud/secret-manager": "^6.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1"
+  }
+}
