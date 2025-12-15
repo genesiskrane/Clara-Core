@@ -6,7 +6,7 @@ router.get("/:userid", (req, res) => {
 
   if (userID) {
     res.json([
-      { id: 1, name: "Clara" },
+      { id: 1, name: "App.vue" },
       { id: 2, name: "Clara" },
     ]);
   } else {
