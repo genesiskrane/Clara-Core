@@ -32,6 +32,7 @@ wss.on("connection", (ws, req) => {
   console.log("WS client connected:", req.socket.remoteAddress);
 
   ws.on("message", async (raw) => {
+    console.log('WS message received:')
     try {
       const { action, payload } = JSON.parse(raw.toString());
 
