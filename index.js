@@ -8,6 +8,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, path: "/data" });
 
 const core = require("./core");
+const fn = require("./functions");
 const middlewares = require("./middlewares");
 const router = require("./router");
 const { home } = require("./controller");
@@ -32,36 +33,31 @@ wss.on("connection", (ws, req) => {
   console.log("WS client connected:", req.socket.remoteAddress);
 
   ws.on("message", async (raw) => {
-    console.log('WS message received:')
     try {
-      const { action, payload } = JSON.parse(raw.toString());
+      const parsed = JSON.parse(raw.toString());
+      const { action, payload } = parsed;
 
-      if (action === "getGlobalFiles") {
-        const files = await core.getGlobalFiles(payload.type);
-
+      // Validate that the action exists in fn
+      if (!action || typeof fn[action] !== "function") {
         ws.send(
           JSON.stringify({
-            action,
-            data: files,
+            error: "Unknown or invalid action",
           })
         );
-      } else if (action === "getProjectFiles") {
-        const files = await core.getProjectFiles(payload.project, payload.type);
-
-        ws.send(
-          JSON.stringify({
-            action,
-            data: files,
-          })
-        );
-      } else {
-        ws.send(
-          JSON.stringify({
-            error: "Unknown action",
-          })
-        );
+        return;
       }
+
+      // Call the function and send result
+      const files = await fn[action](payload?.type);
+
+      ws.send(
+        JSON.stringify({
+          action,
+          data: files,
+        })
+      );
     } catch (err) {
+      console.error("WS message error:", err);
       ws.send(
         JSON.stringify({
           error: err.message,
@@ -75,7 +71,14 @@ wss.on("connection", (ws, req) => {
   });
 });
 
+// Initialize core and start server
 (async () => {
-  await core.init();
-  server.listen(PORT, () => console.log("Clara Core Running on port " + PORT));
+  try {
+    await core.init();
+    server.listen(PORT, () =>
+      console.log(`Clara Core Running on port ${PORT}`)
+    );
+  } catch (err) {
+    console.error("Failed to start server:", err);
+  }
 })();
