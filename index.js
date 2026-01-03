@@ -48,7 +48,7 @@ wss.on("connection", (ws, req) => {
       }
 
       // Call the function and send result
-      const files = await fn[action](payload?.type);
+      const files = await fn[action](payload);
 
       ws.send(
         JSON.stringify({

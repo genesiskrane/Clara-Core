@@ -7,4 +7,11 @@ async function getGlobalFiles() {
   return files;
 }
 
-module.exports = { getGlobalFiles };
+async function getProjectFiles() {
+  const files = await File.find({});
+  console.log("Project files fetched:", files);
+
+  return files;
+}
+
+module.exports = { getGlobalFiles, getProjectFiles };
