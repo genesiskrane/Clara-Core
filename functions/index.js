@@ -1,5 +1,10 @@
+const { File } = require("../db/models");
+
 async function getGlobalFiles() {
-    console.log('Fetching global files...')
+  const files = await File.find();
+  console.log("Global files fetched:", files);
+
+  return files;
 }
 
-module.exports = { getGlobalFiles }
+module.exports = { getGlobalFiles };
