@@ -44,7 +44,7 @@ async function saveRoutes({ routes }) {
 }
 
 async function getStoreDefinitions({ actions, state }) {
-  return { actions, state };
+  return [...actions, ...state];
 }
 
 module.exports = {
