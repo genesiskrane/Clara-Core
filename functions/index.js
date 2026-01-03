@@ -44,7 +44,19 @@ async function saveRoutes({ routes }) {
 }
 
 async function getStoreDefinitions({ actions, state }) {
-  return [...actions, ...state];
+  return [
+    {
+      type: "state",
+      state: {
+        user: null,
+        token: null,
+      },
+    },
+    {
+      type: "action",
+      body: "async login(payload) { ... }",
+    },
+  ];
 }
 
 module.exports = {
