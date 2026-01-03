@@ -5,7 +5,7 @@ const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
 const MONGODB_SERVER = process.env.MONGODB_SERVER;
 
 const MONGODB_URI = () =>
-  `mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_SERVER}/main`;
+  `mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_SERVER}/krane`;
 
 mongoose.set("strictQuery", true);
 
