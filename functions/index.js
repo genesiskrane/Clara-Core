@@ -43,4 +43,13 @@ async function saveRoutes({ routes }) {
   console.log("Routes saved/updated with projects:", result);
 }
 
-module.exports = { getGlobalFiles, getProjectFiles, saveRoutes };
+async function getStoreDefinitions({ actions, state }) {
+  return { actions, state };
+}
+
+module.exports = {
+  getGlobalFiles,
+  getProjectFiles,
+  saveRoutes,
+  getStoreDefinitions,
+};
