@@ -1,4 +1,7 @@
-const { File } = require("../db/models");
+const fs = require("fs");
+const path = require("path");
+
+const { File, Route } = require("../db/models");
 
 async function getGlobalFiles() {
   const files = await File.find({});
@@ -14,4 +17,19 @@ async function getProjectFiles() {
   return files;
 }
 
-module.exports = { getGlobalFiles, getProjectFiles };
+async function saveRoutes({ routes }) {
+  if (!routes || !Array.isArray(routes) || !routes.length) return;
+
+  const bulkOps = routes.map((route) => ({
+    updateOne: {
+      filter: { _id: route._id },
+      update: { $set: route },
+      upsert: true, // insert if not exists
+    },
+  }));
+
+  const result = await Route.bulkWrite(bulkOps);
+  console.log("Routes saved:", result);
+}
+
+module.exports = { getGlobalFiles, getProjectFiles, saveRoutes };
