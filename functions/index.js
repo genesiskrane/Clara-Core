@@ -23,13 +23,24 @@ async function saveRoutes({ routes }) {
   const bulkOps = routes.map((route) => ({
     updateOne: {
       filter: { _id: route._id },
-      update: { $set: route },
-      upsert: true, // insert if not exists
+      update: {
+        $set: {
+          name: route.name,
+          component: route.component,
+          redirect: route.redirect,
+          parent: route.parent,
+          meta: route.meta || {},
+        },
+        $addToSet: {
+          projects: { $each: route.projects || [] }, // add new projects without duplicates
+        },
+      },
+      upsert: true,
     },
   }));
 
   const result = await Route.bulkWrite(bulkOps);
-  console.log("Routes saved:", result);
+  console.log("Routes saved/updated with projects:", result);
 }
 
 module.exports = { getGlobalFiles, getProjectFiles, saveRoutes };
