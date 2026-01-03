@@ -30,18 +30,4 @@ router.get("/:userid/:project", (req, res) => {
   }
 });
 
-router.post("/country", async (req, res) => {
-  console.log("req.body", req.body);
-
-  const country = new Country({
-    name: req.body.name,
-    code: req.body.code,
-    capital: req.body.capital,
-    population: req.body.population,
-  });
-
-  await country.save();
-  res.send("OK");
-});
-
 module.exports = router;
